@@ -9,11 +9,14 @@ const ChatList = ({ userInfo, getChat, chats }) => {
 
     useEffect(() => {
         const chat = chats.filter(c => c.people.includes(userInfo.username) && c.people.includes(user.username))[0];
-
+        
         if (chat) {
-            const messageInfo = chat.messages.filter(m => m.username != userInfo.username).sort((m1, m2) => m2.time - m1.time)[0];
-            const time = calculateTime(messageInfo.time);
-            setChatInfo({message: messageInfo.message, time})
+            const messageInfo = chat.messages.filter(m => m.username != user.username).sort((m1, m2) => m2.time - m1.time)[0];
+
+            if (messageInfo) {
+                const time = calculateTime(messageInfo.time);
+                setChatInfo({ message: messageInfo.message, time });
+            }
         }
     }, [])
 

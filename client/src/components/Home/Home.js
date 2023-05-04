@@ -14,7 +14,6 @@ const Home = () => {
     const [newMessage, setNewMessage] = useState("");
 
     const { user } = useContext(UserContext);
-    console.log(chats);
     useEffect(() => {
         fetch("http://localhost:3030/users").then(res => res.json()).then(data => setUsers(data.filter(u => u.username != user.username)));
         fetch("http://localhost:3030/chats").then(res => res.json()).then(data => setChats(data));
@@ -52,7 +51,6 @@ const Home = () => {
 
     const submitHandler = () => {
         const time = getTimeInSeconds();
-        console.log(receiver);
         ws.send(JSON.stringify({ message: newMessage, sender: user.username, receiver, time }));
         const newMessages = currentChat.messages;
         newMessages.push({ username: user.username, message: newMessage, time });
@@ -68,7 +66,7 @@ const Home = () => {
                     <div className="chats">
                         {users.map(user => <ChatList key={user.username} userInfo={user} getChat={getChat} chats={chats} />)}
                     </div>
-                    {currentChat &&
+                    {currentChat.people.length > 0 &&
                         <div className="chat">
                             {currentChat.length != "" && currentChat.messages.map(messageInfo => <Message key= {messageInfo.time} info={messageInfo} isMine={messageInfo.username == user.username} />)}
                             <div className="newMessage">
