@@ -1,0 +1,49 @@
+body{
+    background-color: black;
+}
+
+.chats, .chat {
+    width: 40rem;
+    height: 50rem;
+    padding:1rem;
+}
+
+.home-body{
+    display: flex;
+    gap:1rem;
+    padding:1rem;
+}
+
+.chat{
+    background-color: white;
+    position: relative;
+}
+
+.newMessage{
+    position: absolute;
+    bottom:10px;
+    width: 100%;
+}
+
+.newMessage input{
+    width: 93%;
+    height: 5rem;
+    padding:0.5rem;
+    border:1px solid orange;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    margin-bottom: 0.3rem;
+}
+
+.newMessage button{
+   padding:0.5rem;
+   background-color: aqua;
+   border-radius: 25px;
+   border: none;
+}
+
+.newMessage button:hover{
+    transform: scale(1.01);
+}
+

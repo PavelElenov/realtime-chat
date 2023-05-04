@@ -1,0 +1,42 @@
+.mine, .theirs{
+    display: flex;
+    gap:5px;
+    height: 5rem;
+    margin-bottom: 1rem;
+}
+
+.mine{
+    text-align: right;
+    flex-direction: row-reverse;
+}
+
+.user-img{
+    width: 60px;
+    height: 60px;
+}
+
+.message{
+    padding:0.5rem;
+}
+
+.mine .message{
+    background-color: rgb(184, 177, 177);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.theirs .message{
+    border: 1px solid orange;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.time{
+    color:rgb(161, 155, 155);
+    font-size:0.9rem;
+}
+
+
+
