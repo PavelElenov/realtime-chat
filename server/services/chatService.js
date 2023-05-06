@@ -11,9 +11,8 @@ const addMessage = (message, sender, receiver, time) => {
         chat.messages.push({username:sender, message, time});
     }else{
         chat = {people:[sender, receiver], messages:[{username:sender, message, time}]}
+        chats = [...chats, chat]
     }
-
-    chats = [...chats, chat]
 }
 
 module.exports = {

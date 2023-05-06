@@ -10,32 +10,33 @@ const Home = () => {
     const [users, setUsers] = useState(null);
     const [chats, setChats] = useState(null);
     const [receiver, setReceiver] = useState("");
-    const [currentChat, setCurrentChat] = useState({people:[], messages:[]}); // [{people: ["By-the-way", "Kaside"], messages: [ {name: "By-the-way", message: "Hi, How are you?", time:1111},{name: "Kaside",message: "Hi, I am good thank you."}]}]
+    const [currentChat, setCurrentChat] = useState({ people: [], messages: [] }); // [{people: ["By-the-way", "Kaside"], messages: [ {name: "By-the-way", message: "Hi, How are you?", time:1111},{name: "Kaside",message: "Hi, I am good thank you."}]}]
     const [newMessage, setNewMessage] = useState("");
 
     const { user } = useContext(UserContext);
+
     useEffect(() => {
         fetch("http://localhost:3030/users").then(res => res.json()).then(data => setUsers(data.filter(u => u.username != user.username)));
         fetch("http://localhost:3030/chats").then(res => res.json()).then(data => setChats(data));
 
-        
         ws.addEventListener("message", (d) => {
             const data = JSON.parse(d.data);
-            
-            if(user.username == data.receiver){
-                setCurrentChat(state => ({people: state.people, messages: [...state.messages, {username:data.sender, message: data.message, time: data.time}]}))
-            }
+            fetch("http://localhost:3030/chats").then(res => res.json()).then(data => setChats(data));
         });
     }, []);
 
     useEffect(() => {
-        fetch("http://localhost:3030/chats").then(res => res.json()).then(data => setChats(data));
-    }, [currentChat])
+        if (currentChat.people.length > 0) {
+            const chat = chats.filter(c => c.people.includes(user.username) && c.people.includes(receiver))[0];
+
+            chat && chat.messages.length > currentChat.messages.length && setCurrentChat(state => ({ people: state.people, messages: chat.messages }));
+        }
+    }, [chats]);
 
     const getChat = (username1, username2) => {
         let chat = chats.filter(chat => chat.people.includes(username1) && chat.people.includes(username2))[0];
         setReceiver(username1);
-        
+
         chat ? setCurrentChat(chat) : setCurrentChat({ people: [username1, username2], messages: [] });
     };
 
@@ -60,15 +61,14 @@ const Home = () => {
 
     return (
         <div>
-            {users && chats && 
+            {users && chats &&
                 <div className="home-body">
-                    Hello
                     <div className="chats">
                         {users.map(user => <ChatList key={user.username} userInfo={user} getChat={getChat} chats={chats} />)}
                     </div>
                     {currentChat.people.length > 0 &&
                         <div className="chat">
-                            {currentChat.length != "" && currentChat.messages.map(messageInfo => <Message key= {messageInfo.time} info={messageInfo} isMine={messageInfo.username == user.username} />)}
+                            {currentChat.length != "" && currentChat.messages.map(messageInfo => <Message key={messageInfo.time} info={messageInfo} isMine={messageInfo.username == user.username} />)}
                             <div className="newMessage">
                                 <input name="message" placeholder="Напиши ново съобщение" onChange={changeHandler} value={newMessage} />
                                 <button onClick={submitHandler}>Send</button>

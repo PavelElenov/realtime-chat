@@ -3,7 +3,8 @@ const { getAllChats } = require("../services/chatService");
 const router = require("express").Router();
 
 router.get("/", (req, res) => {
-    res.json(getAllChats());
+    const chats = getAllChats();
+    res.json(chats);
 });
 
 module.exports = router;
