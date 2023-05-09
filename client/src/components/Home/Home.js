@@ -21,7 +21,7 @@ const Home = () => {
 
         ws.addEventListener("message", (d) => {
             const data = JSON.parse(d.data);
-            fetch("http://localhost:3030/chats").then(res => res.json()).then(data => setChats(data));//update state
+            setChats(data.chat);
         });
     }, []);
 

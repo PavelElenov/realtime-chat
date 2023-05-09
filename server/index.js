@@ -2,7 +2,7 @@ const express = require("express");
 const expressConfig = require("./config/express");
 const routesConfig = require("./config/routes");
 const WebSocket = require("ws");
-const { addMessage } = require("./services/chatService");
+const { addMessage, getAllChats } = require("./services/chatService");
 const http = require("http");
 // Oops
 const app = express();
@@ -17,6 +17,8 @@ wss.on("connection", client => {
     client.on("message", (data) => {
         const newData = JSON.parse(data);
         addMessage(newData.message, newData.sender, newData.receiver, newData.time);
+        const chat = getAllChats();
+        newData["chat"] = chat;
         [...wss.clients].filter(c => c !== client).forEach(c => c.send(JSON.stringify(newData)))
     })
 })
