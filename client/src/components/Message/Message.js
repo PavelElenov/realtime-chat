@@ -1,14 +1,16 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useContext } from "react";
 import "./style.css";
 import { calculateTime } from "../../utils/calculateTime";
+import { UserContext } from "../../contexts/UserContext";
 
-const Message = ({ info, isMine }) => {
+const Message = ({ info, isMine, otherUserInfo}) => {
     const [userInfo, setUserInfo] = useState(null);
     const [time, setTime] = useState("");
+    const {user} = useContext(UserContext);
     const nameOfTheClass = isMine ? "mine" : "theirs";
 
     useEffect(() => {
-        fetch(`http://localhost:3030/${info.username}`).then(res => res.json()).then(data => setUserInfo(data));
+        otherUserInfo ? setUserInfo(otherUserInfo) : setUserInfo(user);
         setTime(calculateTime(info.time));
     }, []);
 

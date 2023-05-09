@@ -21,7 +21,7 @@ const Home = () => {
 
         ws.addEventListener("message", (d) => {
             const data = JSON.parse(d.data);
-            fetch("http://localhost:3030/chats").then(res => res.json()).then(data => setChats(data));
+            fetch("http://localhost:3030/chats").then(res => res.json()).then(data => setChats(data));//update state
         });
     }, []);
 
@@ -68,7 +68,7 @@ const Home = () => {
                     </div>
                     {currentChat.people.length > 0 &&
                         <div className="chat">
-                            {currentChat.length != "" && currentChat.messages.map(messageInfo => <Message key={messageInfo.time} info={messageInfo} isMine={messageInfo.username == user.username} />)}
+                            {currentChat.length != "" && currentChat.messages.map(messageInfo => <Message key={messageInfo.time} info={messageInfo} isMine={messageInfo.username == user.username} otherUserInfo={users.filter(u => u.username == messageInfo.username)[0]}/>)}
                             <div className="newMessage">
                                 <input name="message" placeholder="Напиши ново съобщение" onChange={changeHandler} value={newMessage} />
                                 <button onClick={submitHandler}>Send</button>
